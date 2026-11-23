@@ -1,0 +1,26 @@
+[package]
+name = "shodan-rs"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+name = "shodan_rs"
+path = "src/lib.rs"
+
+[[bin]]
+name = "shodan-rs"
+path = "src/bin/shodan-rs.rs"
+
+[[bin]]
+name = "shodan-mcp"
+path = "src/bin/shodan-mcp.rs"
+
+[dependencies]
+anyhow = "1.0.105"
+clap = { version = "4.6.9", features = ["derive"] }
+reqwest = { version = "0.13.5", default-features = false, features = ["blocking", "gzip", "cookies", "native-tls"] }
+scraper = "0.29.0"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+url = "2.5.9"
+urlencoding = "2.1.3"
