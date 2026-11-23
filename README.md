@@ -11,6 +11,38 @@ cargo build --release
 # бинари: target/release/shodan-rs, target/release/shodan-mcp
 ```
 
+## Установка в OpenCode (bash)
+
+`install.sh` прописывает сервер в конфиг OpenCode, **не затирая** остальные настройки: мержит только `mcp.servers.<name>`, делает `.bak`.
+
+```bash
+# в ./opencode.json текущей папки
+./install.sh
+
+# свой путь к конфигу
+./install.sh --config /path/to/opencode.json
+
+# глобальный конфиг
+./install.sh --global
+
+# свой бинарь и своё имя сервера
+./install.sh --config ./opencode.json --bin /usr/local/bin/shodan-mcp --name shodan
+
+# собрать и установить
+./install.sh --build --global
+
+# посмотреть результат без записи
+./install.sh --config ./opencode.json --dry-run
+
+# убрать сервер из конфига
+./install.sh --config ./opencode.json --uninstall
+```
+
+После установки:
+```bash
+opencode2 mcp list
+```
+
 ## MCP-сервер
 
 `shodan-mcp` — JSON-RPC 2.0 over stdio, два инструмента:
