@@ -21,6 +21,6 @@ clap = { version = "4.6.9", features = ["derive"] }
 reqwest = { version = "0.13.5", default-features = false, features = ["blocking", "gzip", "cookies", "native-tls"] }
 scraper = "0.29.0"
 serde = { version = "1.0.229", features = ["derive"] }
-serde_json = "1.0.154"
+serde_json = { version = "1.0.154", features = ["preserve_order"] }
 url = "2.5.9"
 urlencoding = "2.1.3"
