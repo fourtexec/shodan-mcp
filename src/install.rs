@@ -88,7 +88,15 @@ fn resolve_config(explicit: Option<&Path>, global: bool) -> Result<PathBuf> {
             .map(PathBuf::from)
             .or_else(|| env::var_os("HOME").map(|h| PathBuf::from(h).join(".config")))
             .context("neither XDG_CONFIG_HOME nor HOME is set")?;
-        return Ok(base.join("opencode").join("opencode.json"));
+        let dir = base.join("opencode");
+        // Prefer an existing global config, whatever its extension.
+        for name in ["opencode.jsonc", "opencode.json"] {
+            let candidate = dir.join(name);
+            if candidate.exists() {
+                return Ok(candidate);
+            }
+        }
+        return Ok(dir.join("opencode.json"));
     }
     Ok(env::current_dir()?.join("opencode.json"))
 }

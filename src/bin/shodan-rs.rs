@@ -63,7 +63,7 @@ struct InstallArgs {
     #[arg(long, value_name = "FILE")]
     config: Option<PathBuf>,
 
-    /// Write to ~/.config/opencode/opencode.json
+    /// Write to the global config (~/.config/opencode/opencode.json[c])
     #[arg(long)]
     global: bool,
 
