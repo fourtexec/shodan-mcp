@@ -113,6 +113,10 @@ fn call_tool(params: &Value) -> Result<Value, (i64, String)> {
         .get("name")
         .and_then(Value::as_str)
         .ok_or((-32602, "missing tool name".to_string()))?;
+    if !matches!(name, "shodan_search" | "shodan_facet") {
+        return Err((-32602, format!("unknown tool: {name}")));
+    }
+
     let args = params.get("arguments").cloned().unwrap_or(json!({}));
     let query = args
         .get("query")
@@ -129,7 +133,7 @@ fn call_tool(params: &Value) -> Result<Value, (i64, String)> {
     let result = match name {
         "shodan_search" => run_search(&query, cookie, proxy),
         "shodan_facet" => run_facet(&query, cookie, proxy),
-        _ => return Err((-32602, format!("unknown tool: {name}"))),
+        _ => unreachable!("tool name checked above"),
     };
 
     Ok(match result {
