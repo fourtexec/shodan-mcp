@@ -43,8 +43,8 @@ shodan-rs install --config ./opencode.json --uninstall
 
 | инструмент | аргументы | что возвращает |
 |---|---|---|
-| `local_search` | `query`, `cookie?`, `proxy?` | JSON-массив карточек (page=1), при лимите — facet-IP |
-| `local_facet` | `query`, `cookie?`, `proxy?` | JSON `[{ip, count}]`, работает с фильтрами и без лимита |
+| `shodan_search` | `query`, `cookie?`, `proxy?` | JSON-массив карточек (page=1), при лимите — facet-IP |
+| `shodan_facet` | `query`, `cookie?`, `proxy?` | JSON `[{ip, count}]`, работает с фильтрами и без лимита |
 
 Подключение в opencode (`opencode.jsonc`, V2 — `mcp.servers`):
 

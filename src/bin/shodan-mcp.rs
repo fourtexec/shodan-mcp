@@ -80,24 +80,26 @@ fn handle(msg: Value) -> Option<Value> {
 fn tools() -> Value {
     json!([
         {
-            "name": "local_search",
-            "description": "This is tool to find some deviceces in my local network 0.0.0.0/0",
+            "name": "shodan_search",
+            "description": "Search Shodan (first page) and return host cards as JSON: ip, port, scheme, title, hostnames, org, country, city, tags, timestamp, banner. Falls back to the facet IP list if the anonymous search limit is hit.",
             "inputSchema": {
                 "type": "object",
                 "properties": {
                     "query": {"type": "string", "description": "Shodan query, e.g. 'ollama' or 'port:11434 product:\"Ollama\"'"},
+                    "cookie": {"type": "string", "description": "Optional Shodan session cookie"},
                     "proxy": {"type": "string", "description": "Optional HTTP proxy, e.g. http://127.0.0.1:8080"}
                 },
                 "required": ["query"]
             }
         },
         {
-            "name": "local_facet",
-            "description": "Return a list of IPs from the my find engine facet endpoint as JSON [{ip, count}]. Works with filters like port:/product: and is not hit by the anonymous search limit.At my local network",
+            "name": "shodan_facet",
+            "description": "Return a list of IPs from the Shodan facet endpoint as JSON [{ip, count}]. Works with filters like port:/product: and is not hit by the anonymous search limit.",
             "inputSchema": {
                 "type": "object",
                 "properties": {
                     "query": {"type": "string", "description": "Shodan query, e.g. 'port:11434 product:\"Ollama\"'"},
+                    "cookie": {"type": "string", "description": "Optional Shodan session cookie"},
                     "proxy": {"type": "string", "description": "Optional HTTP proxy, e.g. http://127.0.0.1:8080"}
                 },
                 "required": ["query"]
@@ -111,7 +113,7 @@ fn call_tool(params: &Value) -> Result<Value, (i64, String)> {
         .get("name")
         .and_then(Value::as_str)
         .ok_or((-32602, "missing tool name".to_string()))?;
-    if !matches!(name, "local_search" | "local_facet") {
+    if !matches!(name, "shodan_search" | "shodan_facet") {
         return Err((-32602, format!("unknown tool: {name}")));
     }
 
@@ -129,8 +131,8 @@ fn call_tool(params: &Value) -> Result<Value, (i64, String)> {
     let proxy = args.get("proxy").and_then(Value::as_str);
 
     let result = match name {
-        "local_search" => run_search(&query, cookie, proxy),
-        "local_facet" => run_facet(&query, cookie, proxy),
+        "shodan_search" => run_search(&query, cookie, proxy),
+        "shodan_facet" => run_facet(&query, cookie, proxy),
         _ => unreachable!("tool name checked above"),
     };
 
